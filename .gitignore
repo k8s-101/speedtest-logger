@@ -1,3 +1,6 @@
+# VSCode user settings
+.vscode/
+
 # Ignore build output files
 **/bin
 **/obj
