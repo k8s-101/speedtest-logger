@@ -26,7 +26,7 @@ namespace SpeedTestLogger
                 SessionId = Guid.NewGuid(),
                 User = _config.UserId,
                 Device = _config.LoggerId,
-                Timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
+                TestDate = DateTime.Now,
                 Data = testData
             };
 
