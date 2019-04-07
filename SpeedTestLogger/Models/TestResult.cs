@@ -7,7 +7,7 @@ namespace SpeedTestLogger.Models
         public Guid SessionId { get; set; }
         public string User { get; set; }
         public int Device { get; set; }
-        public long Timestamp { get; set; }
+        public DateTime TestDate { get; set; }
         public TestData Data { get; set; }
     }
 
