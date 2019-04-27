@@ -192,4 +192,8 @@ Typisk får vi ikke så mye ut av dette, da bygg-serveren ikke cacher imager som
 
 Nå kan vi litt om Docker, og kan dockerisere de andre repoene
 -------------------------------------------------------------
-Starter med speedtest-logger, og tar resten etter det.
+Starter med speedtest-logger, og tar resten etter det. Bruker følgende kommando for å starte:
+
+```shell
+&> docker run -it speed-test-logger:0.0.1
+```
