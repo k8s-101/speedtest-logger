@@ -1,0 +1,22 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: speedtest-logger-cronjob
+spec:
+  schedule: "0 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: speedtest-logger
+        spec:
+          imagePullSecrets:
+            - name: regcred 
+          containers:
+          - name: speedtest-logger-cronjob
+            image: k8s101registry.azurecr.io/speedtest-logger:latest
+            env:
+              - name: speedTestApiUrl
+                value: http://speedtest-api-service
+          restartPolicy: Never
