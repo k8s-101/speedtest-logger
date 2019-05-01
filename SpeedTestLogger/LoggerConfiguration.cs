@@ -5,29 +5,33 @@ using Microsoft.Extensions.Configuration;
 
 namespace SpeedTestLogger
 {
-    public class LoggerConfiguration
+  public class LoggerConfiguration
+  {
+    public readonly string UserId;
+    public readonly string KubeMQChannel;
+    public readonly string KubeMQAddress;
+    public readonly int LoggerId;
+    public readonly RegionInfo LoggerLocation;
+    public readonly bool UploadResults;
+    public readonly Uri ApiUrl;
+
+    public LoggerConfiguration()
     {
-        public readonly string UserId;
-        public readonly int LoggerId;
-        public readonly RegionInfo LoggerLocation;
-        public readonly bool UploadResults;
-        public readonly Uri ApiUrl;
+      var builder = new ConfigurationBuilder()
+          .SetBasePath(Directory.GetCurrentDirectory())
+          .AddJsonFile("appsettings.json")
+          .AddJsonFile("appsettings.Development.json", optional: true)
+          .AddEnvironmentVariables();
 
-        public LoggerConfiguration()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .AddJsonFile("appsettings.Development.json", optional: true)
-                .AddEnvironmentVariables();
+      var configuration = builder.Build();
 
-            var configuration = builder.Build();
-
-            UserId = configuration["userId"];
-            LoggerId = Int32.Parse(configuration["loggerId"]);
-            LoggerLocation = new RegionInfo(configuration["loggerLocationCountryCode"]);
-            UploadResults = bool.Parse(configuration["uploadResults"]);
-            ApiUrl = new Uri(configuration["speedTestApiUrl"]);
-        }
+      UserId = configuration["userId"];
+      LoggerId = Int32.Parse(configuration["loggerId"]);
+      LoggerLocation = new RegionInfo(configuration["loggerLocationCountryCode"]);
+      UploadResults = bool.Parse(configuration["uploadResults"]);
+      ApiUrl = new Uri(configuration["speedTestApiUrl"]);
+      KubeMQAddress = configuration["KubeMQ_ServerAddress"];
+      KubeMQChannel = configuration["KubeMQ_Channel"];
     }
+  }
 }

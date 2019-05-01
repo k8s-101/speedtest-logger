@@ -1,22 +1,23 @@
-apiVersion: batch/v1beta1
-kind: CronJob
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: speedtest-logger-cronjob
+  name: speedtest-logger-job
 spec:
-  schedule: "0 * * * *"
-  jobTemplate:
+  template:
+    metadata:
+      labels:
+        app: speedtest-logger
     spec:
-      template:
-        metadata:
-          labels:
-            app: speedtest-logger
-        spec:
-          imagePullSecrets:
-            - name: regcred 
-          containers:
-          - name: speedtest-logger-cronjob
-            image: k8s101registry.azurecr.io/speedtest-logger:latest
-            env:
-              - name: speedTestApiUrl
-                value: http://speedtest-api-service
-          restartPolicy: Never
+      imagePullSecrets:
+        - name: regcred 
+      containers:
+      - name: speedtest-logger-job
+        image: k8s101registry.azurecr.io/speedtest-logger:latest
+        env:
+          - name: speedTestApiUrl
+            value: http://speedtest-api-service
+          - name: KubeMQ_ServerAddress
+            value: kubemq-cluster:50000
+          - name: KubeMQ_Channel
+            value: speedtest
+      restartPolicy: OnFailure
