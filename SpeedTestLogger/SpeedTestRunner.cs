@@ -13,9 +13,9 @@ namespace SpeedTestLogger
         private readonly Settings _settings;
         private readonly RegionInfo _location;
 
-        public SpeedTestRunner(RegionInfo location)
+        public SpeedTestRunner(SpeedTestClient client, RegionInfo location)
         {
-            _client = new SpeedTestClient();
+            _client = client;
             _settings = _client.GetSettings();
             _location = location;
         }
@@ -72,14 +72,14 @@ namespace SpeedTestLogger
                     return s;
                 })
                 .OrderBy(s => s.Latency);
-            
+
             return serversOrdersByLatency.First();
         }
 
         private double TestDownloadSpeed(Server server)
         {
             var downloadSpeed = _client.TestDownloadSpeed(server, _settings.Download.ThreadsPerUrl);
-            
+
             return ConvertSpeedToMbps(downloadSpeed);
         }
 
@@ -99,18 +99,18 @@ namespace SpeedTestLogger
         {
             // Wondering why this culture isn't supported? https://stackoverflow.com/a/41879861/840453
             var unsupportedCultureLCID = 4096;
-            
+
             var allRegions = CultureInfo
                 .GetCultures(CultureTypes.SpecificCultures)
                 .Select(culture => culture.LCID)
                 .Where(lcid => lcid != unsupportedCultureLCID)
                 .Select(lcid => new RegionInfo(lcid));
-            
+
             var region = allRegions.FirstOrDefault(c =>
             {
                 return String.Equals(c.EnglishName, englishName, StringComparison.OrdinalIgnoreCase);
             });
-            
+
             if (region == null)
             {
                 var unknownISORegionName = "XX";
