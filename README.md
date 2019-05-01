@@ -24,7 +24,7 @@ Den bestemmes av hva man sender inn når man bygger. Under har vi sagt at den sk
 &> docker build -f Dockerfile -t speed-test-logger:0.0.1 .
 ```
 
-Vi skirver en Dockerfile!
+Vi skriver en Dockerfile!
 -------------------------
 ### Litt om base-imager
 Man starter ikke helt på scratch, finner noe som har [.NET Core installert fra før](https://hub.docker.com/_/microsoft-dotnet-core). [Her](https://docs.docker.com/engine/examples/dotnetcore/) er det også litt nyttig informasjon.
