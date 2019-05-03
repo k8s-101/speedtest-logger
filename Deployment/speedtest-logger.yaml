@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: speedtest-logger-job
+  name: speedtest-logger
 spec:
   template:
     metadata:
@@ -11,9 +11,11 @@ spec:
       imagePullSecrets:
         - name: regcred 
       containers:
-      - name: speedtest-logger-job
+      - name: speedtest-logger
         image: k8s101registry.azurecr.io/speedtest-logger:latest
         env:
+          - name: singleRun
+            value: "false"
           - name: speedTestApiUrl
             value: http://speedtest-api-service
           - name: KubeMQ_ServerAddress
