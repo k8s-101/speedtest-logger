@@ -19,11 +19,13 @@ namespace SpeedTestLogger
 
         public void ConfigureServices(IServiceCollection services, IHostingEnvironment environment)
         {
+            var singleRun = bool.Parse(Configuration["singleRun"]);
             var userId = Configuration["userId"];
             var loggerId = Int32.Parse(Configuration["loggerId"]);
             var uploadResults = bool.Parse(Configuration["uploadResults"]);
             services.AddTransient<LoggerHostConfiguration>(provider => new LoggerHostConfiguration
             {
+                SingleRun = singleRun,
                 UserId = userId,
                 LoggerId = loggerId,
                 UploadResults = uploadResults,

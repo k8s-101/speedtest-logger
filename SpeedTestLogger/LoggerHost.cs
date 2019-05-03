@@ -13,22 +13,29 @@ namespace SpeedTestLogger
         private readonly SpeedTestRunner _runner;
         private readonly SpeedTestApiClient _apiClient;
         private readonly LoggerHostConfiguration _config;
+        private readonly IApplicationLifetime _lifetime;
 
-        public LoggerHost(KubeMQClient queue, SpeedTestRunner runner, SpeedTestApiClient apiClient, LoggerHostConfiguration config)
+        public LoggerHost(KubeMQClient queue, SpeedTestRunner runner, SpeedTestApiClient apiClient, LoggerHostConfiguration config, IApplicationLifetime lifetime)
         {
             _queue = queue;
             _runner = runner;
             _apiClient = apiClient;
             _config = config;
+            _lifetime = lifetime;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("Starting SpeedTestLogger");
 
-            _queue.SubscribeToEvents(HandleIncomingEvents);
-
-            await Task.CompletedTask;
+            if (_config.SingleRun)
+            {
+                await RunSpeedTestAndUploadResults();
+                _lifetime.StopApplication();
+            }
+            else {
+                _queue.SubscribeToEvents(HandleIncomingEvents);
+            }
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
