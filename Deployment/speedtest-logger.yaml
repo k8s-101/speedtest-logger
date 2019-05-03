@@ -19,7 +19,7 @@ spec:
           - name: speedTestApiUrl
             value: http://speedtest-api-service
           - name: KubeMQ_ServerAddress
-            value: kubemq-cluster:50000
+            value: kubemq-cluster-node:50000
           - name: KubeMQ_Channel
             value: speedtest
       restartPolicy: OnFailure
