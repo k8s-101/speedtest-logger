@@ -68,7 +68,14 @@ namespace SpeedTestLogger
             var serversOrdersByLatency = tenLocalServers
                 .Select(s =>
                 {
-                    s.Latency = _client.TestServerLatency(s);
+                    try
+                    {
+                        s.Latency = _client.TestServerLatency(s);
+                    }
+                    catch (System.Exception)
+                    {
+                        s.Latency = int.MaxValue;
+                    }
                     return s;
                 })
                 .OrderBy(s => s.Latency);
