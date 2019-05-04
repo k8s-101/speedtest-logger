@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: speedtest-logger
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: speedtest-logger
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: speedtest-logger
+          image: taeregistry.azurecr.io/speed-test-logger:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: singleRun
+              value: "false"
+            - name: speedTestApiUrl
+              value: http://13.81.246.53
+            - name: KubeMQ_ServerAddress
+              value: kubemq-cluster-node:50000
+            - name: KubeMQ_Channel
+              value: speedtest
