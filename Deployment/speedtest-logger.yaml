@@ -12,12 +12,12 @@ spec:
         - name: regcred 
       containers:
       - name: speedtest-logger
-        image: k8s101registry.azurecr.io/speedtest-logger:latest
+        image: taeregistry.azurecr.io/speed-test-logger:0.0.1
         env:
           - name: singleRun
-            value: "false"
+            value: "true"
           - name: speedTestApiUrl
-            value: http://speedtest-api-service
+            value: http://13.81.246.53
           - name: KubeMQ_ServerAddress
             value: kubemq-cluster-node:50000
           - name: KubeMQ_Channel
