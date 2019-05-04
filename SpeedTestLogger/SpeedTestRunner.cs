@@ -82,14 +82,14 @@ namespace SpeedTestLogger
                     Latitude = 59.913396,
                     Longitude = 10.741330,
                     Isp = "UUNET",
-                    Country = "Norway"
+                    Country = GetISORegionNameFromEnglishName("Norway")
                 },
                 Server = new TestServer
                 {
                     Host = "speedtest.not",
                     Latitude = 59.902138,
                     Longitude = 10.771267,
-                    Country = "Norway",
+                    Country = GetISORegionNameFromEnglishName("Norway"),
                     Distance = 2430,
                     Ping = random.Next(6, 20),
                     Id = 42
