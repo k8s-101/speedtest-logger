@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk AS build-stage
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-stage
 WORKDIR /SpeedTestLogger
 
 COPY /SpeedTestLogger/SpeedTestLogger.csproj ./
@@ -10,7 +10,7 @@ RUN dotnet publish \
     --configuration Release \
     --no-restore
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 LABEL repository="github.com/k8s-101/speedtest-logger"
 WORKDIR /SpeedTestLogger
 
