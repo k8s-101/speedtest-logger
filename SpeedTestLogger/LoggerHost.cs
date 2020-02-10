@@ -13,9 +13,9 @@ namespace SpeedTestLogger
         private readonly SpeedTestRunner _runner;
         private readonly SpeedTestApiClient _apiClient;
         private readonly LoggerHostConfiguration _config;
-        private readonly IApplicationLifetime _lifetime;
+        private readonly IHostApplicationLifetime _lifetime;
 
-        public LoggerHost(KubeMQClient queue, SpeedTestRunner runner, SpeedTestApiClient apiClient, LoggerHostConfiguration config, IApplicationLifetime lifetime)
+        public LoggerHost(KubeMQClient queue, SpeedTestRunner runner, SpeedTestApiClient apiClient, LoggerHostConfiguration config, IHostApplicationLifetime lifetime)
         {
             _queue = queue;
             _runner = runner;

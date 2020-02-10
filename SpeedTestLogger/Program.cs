@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
-using SpeedTestLogger.Host.Generic;
 
 namespace SpeedTestLogger
 {
@@ -13,8 +12,11 @@ namespace SpeedTestLogger
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
-            GenericHost
-                .CreateDefaultBuilder(args)
-                .UseStartup(config => new Startup(config));
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices((context, services) =>
+                {
+                    var startup = new Startup(context.Configuration);
+                    startup.ConfigureServices(services, context.HostingEnvironment);
+                });
     }
 }

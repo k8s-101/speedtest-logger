@@ -4,11 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SpeedTest;
-using SpeedTestLogger.Host.Generic;
 
 namespace SpeedTestLogger
 {
-    public class Startup : IStartup
+    public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -17,7 +16,7 @@ namespace SpeedTestLogger
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services, IHostingEnvironment environment)
+        public void ConfigureServices(IServiceCollection services, IHostEnvironment environment)
         {
             var singleRun = bool.Parse(Configuration["singleRun"]);
             var userId = Configuration["userId"];
