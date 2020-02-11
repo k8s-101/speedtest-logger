@@ -1,9 +1,12 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: speedtest-logger
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: speedtest-logger
   template:
     metadata:
       labels:
@@ -13,7 +16,7 @@ spec:
         - name: regcred
       containers:
         - name: speedtest-logger
-          image: taeregistry.azurecr.io/speed-test-logger:0.0.1
+          image: k8s101registry.azurecr.io/speed-test-logger:0.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 80
