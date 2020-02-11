@@ -26,7 +26,8 @@ namespace SpeedTestLogger
     {
       var subscriber = new Subscriber(_address);
       SubscribeRequest subscribeRequest = CreateSubscribeRequest();
-      subscriber.SubscribeToEvents(subscribeRequest, handler);
+      Subscriber.HandleEventErrorDelegate errorHandler = (errorHandler) => Console.WriteLine(errorHandler.Message);
+      subscriber.SubscribeToEvents(subscribeRequest, handler, errorHandler);
       Console.WriteLine($"Subscribing to channel: {_channel} at KubeMQ({_address})");
     }
 
