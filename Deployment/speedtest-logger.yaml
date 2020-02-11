@@ -17,7 +17,7 @@ spec:
             - name: singleRun
               value: "true"
             - name: speedTestApiUrl
-              value: http://13.81.246.53
+              value: http://speedtest-api-service
             - name: KubeMQ_ServerAddress
               value: kubemq-cluster-node:50000
             - name: KubeMQ_Channel
