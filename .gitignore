@@ -7,3 +7,6 @@
 
 # Ignore development settings
 appsettings.Development.json
+
+# Ignore publish output folder
+**/PublishedApp
