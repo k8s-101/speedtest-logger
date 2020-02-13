@@ -37,13 +37,13 @@ namespace SpeedTestLogger
             var kubeMQChannel = Configuration["KubeMQ_Channel"];
             services.AddTransient<KubeMQClient>(provider => new KubeMQClient(kubeMQAddress, loggerId, kubeMQChannel));
 
-            services.AddTransient<SpeedTestRunner>(provider => new SpeedTestRunner());
-
-            // var loggerLocation = new RegionInfo(Configuration["loggerLocationCountryCode"]);
-            // services.AddTransient<SpeedTestRunner>(provider =>
-            //     new SpeedTestRunner(
-            //         new SpeedTestClient(),
-            //         loggerLocation));
+            var useDummyData = Configuration.GetValue<bool>("useDummyData");
+            var loggerLocation = new RegionInfo(Configuration["loggerLocationCountryCode"]);
+            services.AddTransient<SpeedTestRunner>(provider =>
+                new SpeedTestRunner(
+                    new SpeedTestClient(),
+                    loggerLocation,
+                    useDummyData));
 
             services.AddHostedService<LoggerHost>();
         }

@@ -9,61 +9,62 @@ namespace SpeedTestLogger
 {
     public class SpeedTestRunner
     {
-        // private readonly SpeedTestClient _client;
-        // private readonly Settings _settings;
-        // private readonly RegionInfo _location;
+        private readonly SpeedTestClient _client;
+        private readonly Settings _settings;
+        private readonly RegionInfo _location;
+        private readonly bool _useDummyData;
 
-        // public SpeedTestRunner(SpeedTestClient client, RegionInfo location)
-        // {
-        //     _client = client;
-        //     _settings = _client.GetSettings();
-        //     _location = location;
-        // }
-
-        public SpeedTestRunner()
+        public SpeedTestRunner(SpeedTestClient client, RegionInfo location, bool useDummyData)
         {
+            _client = client;
+            _settings = _client.GetSettings();
+            _location = location;
+            _useDummyData = useDummyData;
         }
 
         public TestData RunSpeedTest()
         {
-            Console.WriteLine("Returning dummy data");
-            return DummyTestData();
+            if (_useDummyData)
+            {
+                Console.WriteLine("Returning dummy data");
+                return DummyTestData();
+            }
 
-            // Console.WriteLine("Finding best test servers");
-            // var server = FindBestTestServer();
+            Console.WriteLine("Finding best test servers");
+            var server = FindBestTestServer();
 
-            // Console.WriteLine("Testing download speed");
-            // var downloadSpeed = TestDownloadSpeed(server);
+            Console.WriteLine("Testing download speed");
+            var downloadSpeed = TestDownloadSpeed(server);
 
-            // Console.WriteLine("Testing upload speed");
-            // var uploadSpeed = TestUploadSpeed(server);
+            Console.WriteLine("Testing upload speed");
+            var uploadSpeed = TestUploadSpeed(server);
 
-            // return new TestData
-            // {
-            //     Speeds = new TestSpeeds
-            //     {
-            //         Download = downloadSpeed,
-            //         Upload = uploadSpeed
-            //     },
-            //     Client = new TestClient
-            //     {
-            //         Ip = _settings.Client.Ip,
-            //         Latitude = _settings.Client.Latitude,
-            //         Longitude = _settings.Client.Longitude,
-            //         Isp = _settings.Client.Isp,
-            //         Country = _location.TwoLetterISORegionName
-            //     },
-            //     Server = new TestServer
-            //     {
-            //         Host = server.Host,
-            //         Latitude = server.Latitude,
-            //         Longitude = server.Longitude,
-            //         Country = GetISORegionNameFromEnglishName(server.Country),
-            //         Distance = server.Distance,
-            //         Ping = server.Latency,
-            //         Id = server.Id
-            //     }
-            // };
+            return new TestData
+            {
+                Speeds = new TestSpeeds
+                {
+                    Download = downloadSpeed,
+                    Upload = uploadSpeed
+                },
+                Client = new TestClient
+                {
+                    Ip = _settings.Client.Ip,
+                    Latitude = _settings.Client.Latitude,
+                    Longitude = _settings.Client.Longitude,
+                    Isp = _settings.Client.Isp,
+                    Country = _location.TwoLetterISORegionName
+                },
+                Server = new TestServer
+                {
+                    Host = server.Host,
+                    Latitude = server.Latitude,
+                    Longitude = server.Longitude,
+                    Country = GetISORegionNameFromEnglishName(server.Country),
+                    Distance = server.Distance,
+                    Ping = server.Latency,
+                    Id = server.Id
+                }
+            };
         }
 
         private TestData DummyTestData()
@@ -97,43 +98,43 @@ namespace SpeedTestLogger
             };
         }
 
-        // private Server FindBestTestServer()
-        // {
-        //     var tenLocalServers = _settings.Servers
-        //         .Where(s => s.Country.Equals(_location.EnglishName))
-        //         .Take(10);
+        private Server FindBestTestServer()
+        {
+            var tenLocalServers = _settings.Servers
+                .Where(s => s.Country.Equals(_location.EnglishName))
+                .Take(10);
 
-        //     var serversOrdersByLatency = tenLocalServers
-        //         .Select(s =>
-        //         {
-        //             try
-        //             {
-        //                 s.Latency = _client.TestServerLatency(s);
-        //             }
-        //             catch (System.Exception)
-        //             {
-        //                 s.Latency = int.MaxValue;
-        //             }
-        //             return s;
-        //         })
-        //         .OrderBy(s => s.Latency);
+            var serversOrdersByLatency = tenLocalServers
+                .Select(s =>
+                {
+                    try
+                    {
+                        s.Latency = _client.TestServerLatency(s);
+                    }
+                    catch (System.Exception)
+                    {
+                        s.Latency = int.MaxValue;
+                    }
+                    return s;
+                })
+                .OrderBy(s => s.Latency);
 
-        //     return serversOrdersByLatency.First();
-        // }
+            return serversOrdersByLatency.First();
+        }
 
-        // private double TestDownloadSpeed(Server server)
-        // {
-        //     var downloadSpeed = _client.TestDownloadSpeed(server, _settings.Download.ThreadsPerUrl);
+        private double TestDownloadSpeed(Server server)
+        {
+            var downloadSpeed = _client.TestDownloadSpeed(server, _settings.Download.ThreadsPerUrl);
 
-        //     return ConvertSpeedToMbps(downloadSpeed);
-        // }
+            return ConvertSpeedToMbps(downloadSpeed);
+        }
 
-        // private double TestUploadSpeed(Server server)
-        // {
-        //     var uploadSpeed = _client.TestUploadSpeed(server, _settings.Upload.ThreadsPerUrl);
+        private double TestUploadSpeed(Server server)
+        {
+            var uploadSpeed = _client.TestUploadSpeed(server, _settings.Upload.ThreadsPerUrl);
 
-        //     return ConvertSpeedToMbps(uploadSpeed);
-        // }
+            return ConvertSpeedToMbps(uploadSpeed);
+        }
 
         private double ConvertSpeedToMbps(double speed)
         {
